@@ -15,8 +15,8 @@ async function initializeEventStorage(contractAddress, contractABI) {
         }
     });
 
-    // Create the new contract event storage entity in MongoDB
-    const newContractEvent = new ContractEvent({ contractAddress, events });
+    // Create the new contract event storage entity in MongoDB with contractAddress as _id
+    const newContractEvent = new ContractEvent({ _id: contractAddress, events });
     await newContractEvent.save();
 
     console.log(`Event storage initialized for contract: ${contractAddress}`);

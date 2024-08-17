@@ -1,3 +1,4 @@
+
 const mongoose = require('mongoose');
 
 // Schema for each event instance
@@ -7,17 +8,16 @@ const EventInstanceSchema = new mongoose.Schema({
         required: true,
     },
     data: {
-        type: mongoose.Schema.Types.Mixed, // Flexible data storage
+        type: mongoose.Schema.Types.Mixed,
         required: true,
     },
 });
 
 // Main schema for storing contract events
 const ContractEventSchema = new mongoose.Schema({
-    contractAddress: {
+    _id: {
         type: String,
         required: true,
-        unique: true,
     },
     events: {
         type: Map,
@@ -26,5 +26,5 @@ const ContractEventSchema = new mongoose.Schema({
     },
 });
 
-// Create and export the model
+// Use the contract address as the _id
 module.exports = mongoose.model('ContractEvent', ContractEventSchema);
