@@ -1,4 +1,5 @@
 const analyzeContractEvents = require('../components/eventAnalyzer');
+const initializeEventStorage = require('../components/initializeEventStorage');
 
 // Example contract address and ABI (replace with real values when testing)
 const contractAddress = '0xB4fd61544493a27a4793F161d6BE153d1A0f6092'; // Replace with your actual contract address
@@ -120,9 +121,21 @@ const contractABI = [
 	}
 ]
 
-// Call the function to analyze and log the contract events
-const events = analyzeContractEvents(contractAddress, contractABI);
+const connectDB = require('../config/database');
 
-// Log the returned event details
-console.log('\nAnalyzed Events Output:');
-console.log(JSON.stringify(events, null, 2));
+connectDB().then(async () => {
+    await initializeEventStorage(contractAddress, contractABI);
+    console.log('Event storage initialization complete');
+    process.exit();
+});
+
+
+
+// // Connect to the database
+// connectDB().then(() => {
+//     console.log('Connection to MongoDB is successful.');
+//     process.exit();
+// }).catch(err => {
+//     console.error('Failed to connect to MongoDB:', err);
+//     process.exit(1);
+// });
