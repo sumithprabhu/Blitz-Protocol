@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-slideIn {
+  animation: slideIn 1s ease-in-out forwards;
+}
+
+#background-flow {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Ensure it doesn't interfere with other content */
+  background-color: #191715; /* Background color as requested */
+}
+
+.flow-line {
+  position: absolute;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  top: 0;
+  left: 0;
+  animation: moveLine 30s linear infinite;
+}
+
+@keyframes moveLine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Position each line at different vertical heights */
+.line-0 { top: 5%; }
+.line-1 { top: 10%; }
+.line-2 { top: 15%; }
+.line-3 { top: 20%; }
+.line-4 { top: 25%; }
+.line-5 { top: 30%; }
+.line-6 { top: 35%; }
+.line-7 { top: 40%; }
+.line-8 { top: 45%; }
+.line-9 { top: 50%; }
+.line-10 { top: 55%; }
+.line-11 { top: 60%; }
+.line-12 { top: 65%; }
+.line-13 { top: 70%; }
+.line-14 { top: 75%; }
+.line-15 { top: 80%; }
+.line-16 { top: 85%; }
+.line-17 { top: 90%; }
+.line-18 { top: 95%; }
+.line-19 { top: 100%; }
