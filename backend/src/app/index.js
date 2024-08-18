@@ -2,30 +2,23 @@ const express = require('express');
 const connectDB = require('../config/database');
 const initializeEventStorage = require('../components/initializeEventStorage');
 
-// Load environment variables
 require('dotenv').config();
 
-// Initialize Express app
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware to parse JSON request bodies
 app.use(express.json());
 
-// Connect to MongoDB
 connectDB();
 
-// Define the /register route
 app.post('/register', async (req, res) => {
     const { contractAddress, contractABI } = req.body;
 
-    // Validate input
     if (!contractAddress || !contractABI) {
         return res.status(400).json({ error: 'Contract address and ABI are required.' });
     }
 
     try {
-        // Initialize event storage for the provided contract address and ABI
         await initializeEventStorage(contractAddress, contractABI);
         return res.status(200).json({ message: 'Event storage initialized successfully.' });
     } catch (error) {
@@ -34,7 +27,6 @@ app.post('/register', async (req, res) => {
     }
 });
 
-// Start the Express server
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
