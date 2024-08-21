@@ -1,6 +1,10 @@
 const express = require('express');
+const { graphqlHTTP } = require('express-graphql');
 const connectDB = require('../config/database');
 const initializeEventStorage = require('../components/initializeEventStorage');
+const schema = require('../graphql/schema'); // Import the GraphQL schema
+const createUser = require('../components/createUser'); // Import the createUser function
+const User = require('../models/user');
 
 require('dotenv').config();
 
@@ -11,169 +15,61 @@ app.use(express.json());
 
 connectDB();
 
-app.post('/register', async (req, res) => {
-    const { contractAddress, contractABI } = req.body;
 
-    if (!contractAddress || !contractABI) {
-        return res.status(400).json({ error: 'Contract address and ABI are required.' });
+// Existing route for registering contracts and creating users
+app.post('/register', async (req, res) => {
+    const { walletAddress, contractAddress, contractABI } = req.body;
+
+    if (!walletAddress || !contractAddress || !contractABI) {
+        return res.status(400).json({ error: 'Wallet address, contract address, and ABI are required.' });
     }
 
     try {
+        // Initialize event storage
         await initializeEventStorage(contractAddress, contractABI);
-        return res.status(200).json({ message: 'Event storage initialized successfully.' });
+
+        // Create a new user and generate an API key
+        const apiKey = await createUser(walletAddress, contractAddress);
+
+        return res.status(200).json({ message: 'User and event storage initialized successfully.', apiKey });
     } catch (error) {
-        console.error('Error initializing event storage:', error);
+        console.error('Error initializing event storage or creating user:', error);
         return res.status(500).json({ error: 'Internal server error' });
     }
 });
 
+// GraphQL middleware for handling GraphQL queries
+app.use('/graphql/:walletAddress', async (req, res, next) => {
+    const walletAddress = req.params.walletAddress;
+    const apiKey = req.header('x-api-key');
+    
+    if (!walletAddress || !apiKey) {
+        return res.status(403).json({ error: 'Forbidden: Wallet address and API Key are required.' });
+    }
+
+    // Find the user by walletAddress (which is the _id in the User model)
+    const user = await User.findById(walletAddress);
+    if (!user) {
+        return res.status(403).json({ error: 'Forbidden: Invalid wallet address.' });
+    }
+
+    // Validate the API key
+    if (user.apiKey !== apiKey) {
+        return res.status(403).json({ error: `Forbidden: Invalid API Key.` });
+    }
+
+    req.user = user; // Attach the user object to the request for later use
+    next();
+}, graphqlHTTP((req) => ({
+    schema: schema,
+    graphiql: true, // Enable GraphiQL interface
+    context: {
+        user: req.user // Pass the authenticated user to the GraphQL context
+    }
+})));
+
+
+// Start the server
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
-
-
-
-// const analyzeContractEvents = require('../components/eventAnalyzer');
-// const initializeEventStorage = require('../components/initializeEventStorage');
-
-// // Example contract address and ABI (replace with real values when testing)
-// const contractAddress = '0xB4fd61544493a27a4793F161d6BE153d1A0f6092'; // Replace with your actual contract address
-// const contractABI = [
-// 	{
-// 		"inputs": [],
-// 		"stateMutability": "nonpayable",
-// 		"type": "constructor"
-// 	},
-// 	{
-// 		"anonymous": false,
-// 		"inputs": [
-// 			{
-// 				"indexed": false,
-// 				"internalType": "uint256",
-// 				"name": "resetNumber",
-// 				"type": "uint256"
-// 			}
-// 		],
-// 		"name": "NumberReset",
-// 		"type": "event"
-// 	},
-// 	{
-// 		"anonymous": false,
-// 		"inputs": [
-// 			{
-// 				"indexed": false,
-// 				"internalType": "uint256",
-// 				"name": "oldNumber",
-// 				"type": "uint256"
-// 			},
-// 			{
-// 				"indexed": false,
-// 				"internalType": "uint256",
-// 				"name": "newNumber",
-// 				"type": "uint256"
-// 			}
-// 		],
-// 		"name": "NumberUpdated",
-// 		"type": "event"
-// 	},
-// 	{
-// 		"anonymous": false,
-// 		"inputs": [
-// 			{
-// 				"indexed": true,
-// 				"internalType": "address",
-// 				"name": "oldOwner",
-// 				"type": "address"
-// 			},
-// 			{
-// 				"indexed": true,
-// 				"internalType": "address",
-// 				"name": "newOwner",
-// 				"type": "address"
-// 			}
-// 		],
-// 		"name": "OwnerChanged",
-// 		"type": "event"
-// 	},
-// 	{
-// 		"inputs": [
-// 			{
-// 				"internalType": "address",
-// 				"name": "newOwner",
-// 				"type": "address"
-// 			}
-// 		],
-// 		"name": "changeOwner",
-// 		"outputs": [],
-// 		"stateMutability": "nonpayable",
-// 		"type": "function"
-// 	},
-// 	{
-// 		"inputs": [],
-// 		"name": "resetNumber",
-// 		"outputs": [],
-// 		"stateMutability": "nonpayable",
-// 		"type": "function"
-// 	},
-// 	{
-// 		"inputs": [],
-// 		"name": "retrieveNumber",
-// 		"outputs": [
-// 			{
-// 				"internalType": "uint256",
-// 				"name": "",
-// 				"type": "uint256"
-// 			}
-// 		],
-// 		"stateMutability": "view",
-// 		"type": "function"
-// 	},
-// 	{
-// 		"inputs": [],
-// 		"name": "retrieveOwner",
-// 		"outputs": [
-// 			{
-// 				"internalType": "address",
-// 				"name": "",
-// 				"type": "address"
-// 			}
-// 		],
-// 		"stateMutability": "view",
-// 		"type": "function"
-// 	},
-// 	{
-// 		"inputs": [
-// 			{
-// 				"internalType": "uint256",
-// 				"name": "newNumber",
-// 				"type": "uint256"
-// 			}
-// 		],
-// 		"name": "updateNumber",
-// 		"outputs": [],
-// 		"stateMutability": "nonpayable",
-// 		"type": "function"
-// 	}
-// ]
-
-// const connectDB = require('../config/database');
-
-// connectDB().then(async () => {
-//     await initializeEventStorage(contractAddress, contractABI);
-//     console.log('Event storage initialization complete');
-//     process.exit();
-// });
-
-
-
-// // Connect to the database
-// connectDB().then(() => {
-//     console.log('Connection to MongoDB is successful.');
-//     process.exit();
-// }).catch(err => {
-//     console.error('Failed to connect to MongoDB:', err);
-//     process.exit(1);
-// });
-
-
-
