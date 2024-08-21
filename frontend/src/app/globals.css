@@ -49,29 +49,39 @@ body {
   position: fixed;
   width: 100%;
   height: 100%;
-  pointer-events: none; /* Ensure it doesn't interfere with other content */
-  background-color: #191715; /* Background color as requested */
+  pointer-events: none;
+  background-color: #191715; /* Background color */
 }
 
 .flow-line {
   position: absolute;
   white-space: nowrap;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 14px;
-  top: 0;
-  left: 0;
-  animation: moveLine 30s linear infinite;
+  color: #39FF14; /* Neon green text color */
+  font-size: 16px; /* Slightly larger font size for readability */
+  opacity: 0.4; /* Lower opacity for background effect */
+  animation-timing-function: linear;
+  animation-iteration-count: infinite; /* Infinite looping */
+  width: auto; /* Set the width dynamically based on the content */
+  white-space: nowrap; /* Ensure the text doesn't wrap */
 }
 
 @keyframes moveLine {
   0% {
-    transform: translateX(-100%);
+    transform: translateX(-100%); /* Start off-screen on the left */
   }
   100% {
-    transform: translateX(100%);
+    transform: translateX(100vw); /* Move completely off-screen to the right */
   }
 }
 
+@keyframes moveLineReverse {
+  0% {
+    transform: translateX(100vw); /* Start off-screen on the right */
+  }
+  100% {
+    transform: translateX(-100%); /* Move completely off-screen to the left */
+  }
+}
 /* Position each line at different vertical heights */
 .line-0 { top: 5%; }
 .line-1 { top: 10%; }
@@ -93,3 +103,45 @@ body {
 .line-17 { top: 90%; }
 .line-18 { top: 95%; }
 .line-19 { top: 100%; }
+
+
+.content-container {
+  background-color: rgba(0, 0, 0); /* Semi-transparent background */
+  border: 2px solid #39FF14; /* Neon green border */
+  border-radius: 15px; /* Rounded corners */
+  padding: 20px; /* Internal padding */
+  max-width: 800px; /* Maximum width */
+  text-align: center; /* Center the text */
+  box-shadow: 0 0 15px rgba(57, 255, 20, 0.5); /* Soft glow effect */
+  z-index: 10; /* Ensure it is above the BackgroundFlow */
+}
+
+
+/* Header styles */
+header {
+  background-color: #000; /* Black background */
+  border-bottom: 2px solid #39FF14; /* Neon green border at the bottom */
+  z-index: 10; /* Ensure the header is above other content */
+}
+
+header .text-white {
+  z-index: 11; /* Ensure text is above everything else */
+}
+
+.launch-button {
+  background-color: #000; /* Black background */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Very light border */
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  text-align: center;
+  border-radius: 10px; /* Rounded rectangular shape */
+  padding: 10px 20px; /* Adjust padding as needed */
+  color: #fff; /* Text color */
+  z-index: 1;
+  margin: 5px;
+}
+
+.launch-button:hover {
+  border-color: #39FF14; /* Change border color on hover */
+}
