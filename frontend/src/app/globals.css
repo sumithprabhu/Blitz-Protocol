@@ -145,3 +145,43 @@ header .text-white {
 .launch-button:hover {
   border-color: #39FF14; /* Change border color on hover */
 }
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+
+/* For Webkit Browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 14px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a; /* Dark background for the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #000000; /* Black color for the scrollbar thumb */
+  border-radius: 6px; /* Rounded corners */
+  border: 2px solid #1a1a1a; /* Padding around the thumb */
+}
+
+/* For Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #000000 #1a1a1a;
+}
+
+
