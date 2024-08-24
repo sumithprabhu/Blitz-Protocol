@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
     _id: {
-        type: String,
+        type: String, // This is the wallet address
         required: true,
         unique: true
     },
@@ -10,10 +10,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
-    },
-    contractAddress: {
-        type: String,
-        required: true
     }
 });
 
