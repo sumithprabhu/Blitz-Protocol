@@ -6,6 +6,8 @@ const schema = require('../graphql/schema'); // Import the GraphQL schema
 const createUser = require('../components/createUser'); // Import the createUser function
 const Blitz = require('../models/blitz'); // Import the Blitz model
 const User = require('../models/user');
+const cors = require('cors');
+
 
 require('dotenv').config();
 
