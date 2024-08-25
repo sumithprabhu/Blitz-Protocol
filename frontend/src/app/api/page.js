@@ -11,6 +11,7 @@ export default function ApiRoutePage() {
   const [apiKey, setApiKey] = useState("");
   const [mounted, setMounted] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -18,18 +19,22 @@ export default function ApiRoutePage() {
 
   const handleGenerateApiKey = async () => {
     try {
-      // Placeholder for actual API call to generate API key
-      const response = await fetch("/api/generate-api-key", {
+      setLoading(true); // Start loading
+
+      const response = await fetch("https://blitz-protocol-backend.vercel.app/createUser", {
         method: "POST",
-        body: JSON.stringify({ address }),
+        body: JSON.stringify({ walletAddress: address }),
         headers: {
           "Content-Type": "application/json",
         },
       });
+
       const data = await response.json();
       setApiKey(data.apiKey || "your-generated-api-key");
     } catch (error) {
       console.error("Error generating API key:", error);
+    } finally {
+      setLoading(false); // End loading
     }
   };
 
@@ -65,10 +70,10 @@ export default function ApiRoutePage() {
           <div className="mt-6">
             <button
               onClick={handleGenerateApiKey}
-              className="w-full px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
-              disabled={!isConnected}
+              className={`w-full px-6 py-3 ${loading ? 'bg-gray-500' : 'bg-blue-500'} text-white rounded-lg hover:bg-blue-600 transition`}
+              disabled={!isConnected || loading}
             >
-              Generate API Key
+              {loading ? 'Generating...' : 'Generate API Key'}
             </button>
           </div>
 
