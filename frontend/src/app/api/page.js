@@ -70,7 +70,7 @@ export default function ApiRoutePage() {
           <div className="mt-6">
             <button
               onClick={handleGenerateApiKey}
-              className={`w-full px-6 py-3 ${loading ? 'bg-gray-500' : 'bg-blue-500'} text-white rounded-lg hover:bg-blue-600 transition`}
+              className={`w-full px-6 py-3 ${loading ? 'bg-gray-500' : 'bg-green-500'} font-bold text-white rounded-lg hover:bg-green-600 transition`}
               disabled={!isConnected || loading}
             >
               {loading ? 'Generating...' : 'Generate API Key'}

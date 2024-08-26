@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from "react";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 export default function UserSection({ user }) {
   return (
@@ -19,11 +20,20 @@ export default function UserSection({ user }) {
           <div className="flex flex-col sm:flex-row justify-between">
             <div className="w-full sm:w-1/2 sm:pr-2">
               <span className="text-sm text-gray-400">Contract Address</span>
-              <p className="text-lg font-bold break-all">{user.contractAddress}</p>
+              <p className="text-lg font-bold break-all">
+                {user.contractAddress}
+              </p>
             </div>
             <div className="w-full sm:w-1/2 sm:pl-2">
               <span className="text-sm text-gray-400">API Key</span>
-              <p className="text-lg font-bold break-all">{user.apiKey}</p>
+              <a
+                href="/api"
+                className="text-blue-500 hover:text-blue-700 flex  mt-1"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Generate API Key <FaExternalLinkAlt className="ml-2" />
+              </a>
             </div>
           </div>
           <div className="w-full">

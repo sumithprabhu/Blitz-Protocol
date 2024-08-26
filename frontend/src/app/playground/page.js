@@ -5,18 +5,39 @@ import Footer from "../../components/Footer";
 import UserSection from "../../components/userSection";
 import Lottie from "react-lottie-player";
 import animationData from "../../../public/animation.json"; // Adjust path as necessary
-import axios from 'axios'; // Axios is commonly used for HTTP requests
-
+import axios from "axios"; // Axios is commonly used for HTTP requests
+import {
+  useAccount,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from "wagmi";
+import contract_ABI from "../../constants/contract_abi.js"; // Import the contract ABI from the contract file
 
 export default function Playground() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(4);
   const [protocolName, setProtocolName] = useState("");
-  const [protocolImage, setProtocolImage] = useState(null);
-  const [contractAddress, setContractAddress] = useState("");
+  const [protocolImage, setProtocolImage] = useState("");
+  const [contractAddress, setContractAddress] = useState("0xB4fDc39F871E8b21b1F17F83AAC0D5E59c754514");
   const [contractABI, setContractABI] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("");
   const [queryResult, setQueryResult] = useState("");
+  const { address } = useAccount();
+  const { data: hash, isPending, writeContractAsync } = useWriteContract();
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({ hash });
+  const [queryText, setQueryText] = useState(`{
+    contract {
+        _id
+        events {
+            eventName
+            instances {
+                timestamp
+                data
+            }
+        }
+    }
+}`);
 
   const handleNextStep = () => {
     if (step === 1) {
@@ -26,10 +47,10 @@ export default function Playground() {
     } else if (step === 3) {
       setIsLoading(true);
       const messages = [
-        "Initializing transaction...",
-        "Connecting to blockchain...",
-        "Verifying contract...",
-        "Fetching data...",
+        "Initializing transaction.",
+        "Verfying Blitz details",
+        "Creating Blitz",
+        "Finalising transaction",
       ];
 
       const totalDuration = 30000; // 30 seconds
@@ -50,49 +71,83 @@ export default function Playground() {
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    setProtocolImage(file);
+    setProtocolImage(
+      "https://github.com/sumithprabhu/Blitz-Protocol/blob/main/frontend/public/profile.jpeg?raw=true"
+    );
   };
 
-  const handleQuery = () => {
-    setQueryResult("Query result will be displayed here.");
+  const handleQuery = async () => {
+    try {
+      // Construct the API endpoint using the contract address
+      const apiUrl = `https://blitz-protocol-backend.vercel.app/api/6575d87b0983efec7d2a6f32b150e2d2/${contractAddress}`;
+
+      // Fetch data from the API using the queryText state
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: queryText,
+        }),
+      });
+
+      // Parse the response
+      const data = await response.json();
+
+      // Set the query result to display it
+      setQueryResult(JSON.stringify(data, null, 2));
+    } catch (error) {
+      console.error("Error running query:", error);
+      setQueryResult("Error running query.");
+    }
   };
 
   const handleInitiateTransaction = async () => {
     try {
+      handleNextStep();
+      const count = await writeContractAsync({
+        address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+        abi: contract_ABI,
+        chainId: 656476,
+        functionName: "createBlitz",
+        args: [address],
+      });
+      console.log(count);
+      console.log("Transaction initiated successfully");
       // Prepare the payload
       const payload = {
         contractAddress,
         contractABI,
         protocolName,
-        imageUrl: protocolImage ? URL.createObjectURL(protocolImage) : 'default-image-url', // Replace 'default-image-url' with an appropriate placeholder if needed
+        imageUrl: protocolImage, // Replace 'default-image-url' with an appropriate placeholder if needed
       };
-  
+
       // Make the POST request to the backend
-      const response = await axios.post(`https://blitz-protocol-backend.vercel.app/register`, payload);
-  
+      const response = await axios.post(
+        `https://blitz-protocol-backend.vercel.app/register`,
+        payload
+      );
+
       // Handle the response from the backend
       if (response.status === 200) {
-        console.log('Protocol registered successfully:', response.data);
+        console.log("Protocol registered successfully:", response.data);
         // You can update the state or trigger any success behavior here
       } else {
-        console.error('Failed to register protocol:', response.data);
+        console.error("Failed to register protocol:", response.data);
         // Handle failure case (e.g., show an error message to the user)
       }
     } catch (error) {
-      console.error('An error occurred during the transaction:', error);
+      console.error("An error occurred during the transaction:", error);
       // Handle error case (e.g., show an error message to the user)
     }
   };
-  
 
   const user = {
-    profilePic: protocolImage
-      ? URL.createObjectURL(protocolImage)
-      : "/profile.jpeg", // Display uploaded image or default
+    profilePic: "/profile.jpeg", // Display uploaded image or default
     name: protocolName || "Blitz Protocol",
-    contractAddress: "0xABC123DEF4567890ABC123DEF4567890ABC123D",
-    apiKey: "sk_test_abc123def456ghi789...",
-    querySlug: "/api/query/0xABC123DEF4567890ABC123DEF4567890ABC123D",
+    contractAddress: contractAddress || "0x1234",
+    querySlug: `https://blitz-protocol-backend.vercel.app/api/{API_KEY}/${contractAddress}`,
   };
 
   return (
@@ -162,7 +217,7 @@ export default function Playground() {
             </p>
             <button
               onClick={handleInitiateTransaction}
-              className="px-8 py-4 bg-neon-green text-black rounded hover:bg-green-600 transition"
+              className="px-8 py-4 bg-green-500 text-black rounded hover:bg-green-600 transition"
             >
               Initiate Transaction
             </button>
@@ -194,7 +249,10 @@ export default function Playground() {
                 placeholder="Enter your query"
                 className="w-full min-h-[500px] p-3 bg-gray-700 rounded border border-gray-600 overflow-y-auto"
                 rows="10"
+                value={queryText}
+                onChange={(e) => setQueryText(e.target.value)}
               />
+
               <button
                 onClick={handleQuery}
                 className="mt-4 px-8 py-4 bg-green-500 text-black rounded hover:bg-green-600 transition"
@@ -204,9 +262,9 @@ export default function Playground() {
             </div>
             <div className="w-1/2 p-4 bg-gray-900 rounded-lg border border-gray-600">
               <h2 className="text-xl font-bold mb-4">Query Result</h2>
-              <div className="p-3 bg-gray-700 rounded">
-                {queryResult || "Query result will appear here."}
-              </div>
+              <pre className="text-white text-left whitespace-pre-wrap break-words">
+      {queryResult || "Query result will appear here."}
+    </pre>
             </div>
           </div>
         )}

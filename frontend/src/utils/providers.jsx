@@ -33,7 +33,10 @@ const OpenCampus = {
 const config = getDefaultConfig({
     appName: "Blitz",
     projectId: "d9a0a754111f41404d4e99cb91f32b3d",
-  chains: [OpenCampus]
+  chains: [OpenCampus],
+  transports: {
+    [OpenCampus.id]: http('https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AiPhQIEo8ED2ky_Jirmck4NbkvgcXWcR75G4Wq9OWu41')
+  }
 });
 
 const queryClient = new QueryClient();
