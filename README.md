@@ -21,5 +21,23 @@ Blitz Protocol is an indexing and querying protocol designed to track and store 
 
 ### **Screenshots**
 <p align="center">
+  <img src="/assets/Screenshot-6.png" alt="Screenshot" width="600"/>
+</p>
+
+<p align="center">
+  <img src="/assets/Screenshot-5.png" alt="Screenshot" width="600"/>
+</p>
+
+<p align="center">
+  <img src="/assets/Screenshot-4.png" alt="Screenshot" width="600"/>
+</p>
+
+<p align="center">
+  <img src="/assets/Screenshot-3.png" alt="Screenshot" width="600"/>
+</p>
+
+<p align="center">
   <img src="/assets/Screenshot-2.png" alt="Screenshot" width="600"/>
 </p>
+
+
