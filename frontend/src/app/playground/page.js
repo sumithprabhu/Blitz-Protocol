@@ -14,11 +14,11 @@ import {
 import contract_ABI from "../../constants/contract_abi.js"; // Import the contract ABI from the contract file
 
 export default function Playground() {
-  const [step, setStep] = useState(4);
+  const [step, setStep] = useState(1);
   const [protocolName, setProtocolName] = useState("");
   const [protocolImage, setProtocolImage] = useState("");
-  const [contractAddress, setContractAddress] = useState("0xB4fDc39F871E8b21b1F17F83AAC0D5E59c754514");
-  const [contractABI, setContractABI] = useState("");
+  const [contractAddress, setContractAddress] = useState("");
+  const [contractABI, setContractABI] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("");
   const [queryResult, setQueryResult] = useState("");
@@ -116,12 +116,22 @@ export default function Playground() {
       console.log(count);
       console.log("Transaction initiated successfully");
       // Prepare the payload
+      let parsedABI;
+    try {
+      parsedABI = JSON.parse(contractABI);
+    } catch (error) {
+      console.error("Error parsing contract ABI:", error);
+      return;
+    }
+    
       const payload = {
         contractAddress,
-        contractABI,
+        contractABI: parsedABI,
         protocolName,
         imageUrl: protocolImage, // Replace 'default-image-url' with an appropriate placeholder if needed
       };
+
+      console.log("Payload:", payload);
 
       // Make the POST request to the backend
       const response = await axios.post(
@@ -194,10 +204,14 @@ export default function Playground() {
             <textarea
               placeholder="Contract ABI"
               value={contractABI}
-              onChange={(e) => setContractABI(e.target.value)}
+              onChange={(e) => {
+                setContractABI(e.target.value);
+                console.log(e.target.value); // Check if the entire content is captured
+              }}
               className="w-full p-3 mb-4 bg-gray-700 rounded border border-gray-600 overflow-y-auto"
               rows="10"
             />
+
             <button
               onClick={handleNextStep}
               className="px-8 py-4 bg-green-500 text-black rounded hover:bg-green-600 transition"
@@ -263,8 +277,8 @@ export default function Playground() {
             <div className="w-1/2 p-4 bg-gray-900 rounded-lg border border-gray-600">
               <h2 className="text-xl font-bold mb-4">Query Result</h2>
               <pre className="text-white text-left whitespace-pre-wrap break-words">
-      {queryResult || "Query result will appear here."}
-    </pre>
+                {queryResult || "Query result will appear here."}
+              </pre>
             </div>
           </div>
         )}

@@ -18,67 +18,54 @@ export default function Explore() {
   const dummyProtocols = [
     {
       id: 1,
-      name: "Protocol One",
+      name: "Open Campus",
       image: "/profile.jpeg",
       contractAddress: "0xABC123DEF4567890ABC123DEF4567890ABC123D",
     },
     {
       id: 2,
-      name: "Protocol Two",
+      name: "Dorahacks",
       image: "/profile2.jpeg",
       contractAddress: "0xDEF4567890ABC123DEF4567890ABC123DEF4567",
     },
     {
       id: 3,
-      name: "Protocol Three",
+      name: "HackQuest",
       image: "/profile4.jpeg",
       contractAddress: "0x1234567890ABCDEF1234567890ABCDEF12345678",
     },
     {
       id: 4,
-      name: "Protocol Four",
+      name: "Push Protocol",
       image: "/profile2.jpeg",
       contractAddress: "0x4567890ABCDEF1234567890ABCDEF1234567890AB",
     },
     {
       id: 5,
-      name: "Protocol Five",
+      name: "Ethereum",
       image: "/profile3.jpeg",
       contractAddress: "0x7890ABCDEF1234567890ABCDEF1234567890ABCDEF",
     },
     {
       id: 6,
-      name: "Protocol Six",
+      name: "Arbitrum",
       image: "/profile4.jpeg",
       contractAddress: "0xABCDEF1234567890ABCDEF1234567890ABCDEF12",
     },
     {
       id: 7,
-      name: "Protocol Seven",
+      name: "Blitz Protocol",
       image: "/profile3.jpeg",
       contractAddress: "0xDEF1234567890ABCDEF1234567890ABCDEF123456",
 
     },
     {
       id: 8,
-      name: "Protocol Eight",
+      name: "Hackathon Updates",
       image: "/profile.jpeg",
       contractAddress: "0x1234567890ABCDEF1234567890ABCDEF1234567890",
     },
-    {
-      id: 9,
-      name: "Protocol Nine",
-      image: "/profile2.jpeg",
-      contractAddress: "0x4567890ABCDEF1234567890ABCDEF123456789012",
-
-    },
-    {
-      id: 10,
-      name: "Protocol Ten",
-      image: "/profile1.jpeg",
-      contractAddress: "0x7890ABCDEF1234567890ABCDEF1234567890ABC123",
     
-    },
   ];
   
 
