@@ -19,7 +19,11 @@ export default function ExpandedCard({ protocol, onCollapse }) {
         <FaTimes />
       </button>
       <div className="text-center">
-        <img src={protocol.image} alt={protocol.name} className="w-32 h-32 rounded-full mx-auto mb-6" />
+        <img
+          src={protocol.image}
+          alt={protocol.name}
+          className="w-32 h-32 rounded-full mx-auto mb-6"
+        />
         <h2 className="text-white text-3xl font-bold mb-6">{protocol.name}</h2>
         <div className="text-left">
           <p className="text-gray-400 mb-1">Contract Address</p>
@@ -28,7 +32,9 @@ export default function ExpandedCard({ protocol, onCollapse }) {
           </p>
           <p className="text-gray-400 mb-1">Query Slug</p>
           <div className="flex items-center bg-gray-900 p-3 rounded-lg mb-2">
-            <p className="text-white break-all mr-2">{protocol.querySlug}</p>
+            <div className="overflow-x-auto whitespace-nowrap">
+              <p className="text-white break-all mr-2 mb-3">{`https://blitz-protocol-backend.vercel.app/api/{API_KEY}/${protocol.contractAddress}`}</p>
+            </div>
             <button
               onClick={() => handleCopy(protocol.querySlug)}
               className="text-gray-400 hover:text-white"
@@ -36,8 +42,11 @@ export default function ExpandedCard({ protocol, onCollapse }) {
               <FaCopy />
             </button>
           </div>
+
           {copied && (
-            <p className="text-green-500 text-sm mt-2 text-center">Slug copied to clipboard!</p>
+            <p className="text-green-500 text-sm mt-2 text-center">
+              Slug copied to clipboard!
+            </p>
           )}
           <a
             href="/api"
