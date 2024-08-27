@@ -103,6 +103,7 @@ export default function Home() {
                     Blitz Protocol. Your gateway to secure and efficient
                     blockchain data access.
                   </p>
+                  <br></br>
                   <a
                     href="/api"
                     className="text-blue-500 hover:text-blue-700 flex items-center justify-center"

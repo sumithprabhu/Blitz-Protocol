@@ -5,6 +5,8 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { useAccount } from "wagmi";
 import { FaCopy } from "react-icons/fa";
+import BackgroundFlow from "../../components/BackgroundFlow";
+
 
 export default function ApiRoutePage() {
   const { address, isConnected } = useAccount();
@@ -51,10 +53,11 @@ export default function ApiRoutePage() {
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
       <Header />
+      <BackgroundFlow />
 
-      <main className="flex-grow p-6 flex flex-col justify-center items-center">
+      <main className="flex-grow p-6 flex flex-col justify-center items-center z-10">
         <div className="w-full max-w-2xl p-8 bg-gray-800 rounded-lg shadow-lg">
-          <h1 className="text-3xl font-bold mb-6 text-center">API Route Page</h1>
+          <h1 className="text-3xl font-bold mb-6 text-center">Generate API Key</h1>
 
           {isConnected ? (
             <div className="mb-6">
