@@ -14,15 +14,13 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors({
-    origin: 'https://blitz-protocol.vercel.app', // Replace with your frontend domain
-    methods: 'GET,POST,PUT,DELETE', // Allowed HTTP methods
-    allowedHeaders: 'Content-Type,Authorization', // Allowed headers
-    credentials: true // Allow credentials (cookies, etc.)
-  }));
-  
-  // Handle preflight requests for all routes
-  app.options('*', cors());
+app.use(function (req, res, next) {
+    //Enabling CORS
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization" );
+      next();
+    });
 
 app.use(express.json());
 
