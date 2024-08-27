@@ -3,6 +3,12 @@
 ### **Overview**
 Blitz Protocol is an indexing and querying protocol designed to track and store every event triggered by smart contracts on Open Campus blockchain. By leveraging Blitz Nodes, the protocol provides real-time access to a wealth of on-chain data, enabling developers to efficiently query and analyze event-driven data from their smart contracts. Blitz Protocol aims to set a new standard in blockchain data management with a focus on security, scalability, and speed.
 
+**Visit Website: [Blitz Protocol](https://blitz-protocol.vercel.app)**
+
+**See Demo: [Youtube Demo](https://youtu.be/dX1RlFe2xa4)**
+
+
+
 ### **Basic Technicalities**
 - **Blitz Nodes**: The backbone of Blitz Protocol, these nodes are responsible for indexing all events triggered in registered smart contracts.
 - **Event Tracking**: Each Blitz Node actively listens to the blockchain for events related to registered contracts and logs these events for efficient retrieval.
