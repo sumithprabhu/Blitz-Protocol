@@ -27,7 +27,7 @@ export default function Home() {
               </h2>
               <p className="text-lg max-w-4xl mx-auto mb-8">
                 The Blitz Protocol revolutionizes how you interact with
-                blockchain data. Whether you're working with smart contracts or
+                blockchain data. Whether you&apos;re working with smart contracts or
                 needing to query specific data points, Blitz Protocol provides a
                 seamless and efficient solution. Tailored for modern
                 decentralized applications, Blitz ensures your data is securely
