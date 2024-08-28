@@ -12,11 +12,12 @@ Blitz Protocol is an indexing and querying protocol designed to track and store 
 ### **Basic Technicalities**
 - **Blitz Nodes**: The backbone of Blitz Protocol, these nodes are responsible for indexing all events triggered in registered smart contracts.
 - **Event Tracking**: Each Blitz Node actively listens to the blockchain for events related to registered contracts and logs these events for efficient retrieval.
+- **Contract Deployment**: Blitz Protocol smart contract is deployed and verified on EDU Chain testnet, and you can find it on the explorer [here](https://opencampus-codex.blockscout.com/address/0x97575899d85557f1C61541358C46ae6A7D60E668?tab=contract)
 
 ### **Repositories**
 - **[Frontend](/frontend/)**: Handles the user interface and interaction logic.
 - **[Backend](/backend/)**: Manages the server logic and database interactions.
-- **[Contract](/contract/)**: Contains the smart contracts deployed on the blockchain.
+- **[Contract](/contract/)**: Contains the smart contracts deployed on the EDU Chain blockchain.
 - **[Blitz Node](/blitz-node/)**: The core component responsible for indexing events from the blockchain.
 
 ### **Future Plans**
