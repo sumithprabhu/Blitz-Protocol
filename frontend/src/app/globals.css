@@ -117,34 +117,6 @@ body {
 }
 
 
-/* Header styles */
-header {
-  background-color: #000; /* Black background */
-  border-bottom: 2px solid #39FF14; /* Neon green border at the bottom */
-  z-index: 10; /* Ensure the header is above other content */
-}
-
-header .text-white {
-  z-index: 11; /* Ensure text is above everything else */
-}
-
-.launch-button {
-  background-color: #000; /* Black background */
-  border: 1px solid rgba(255, 255, 255, 0.3); /* Very light border */
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
-  text-align: center;
-  border-radius: 10px; /* Rounded rectangular shape */
-  padding: 10px 20px; /* Adjust padding as needed */
-  color: #fff; /* Text color */
-  z-index: 1;
-  margin: 5px;
-}
-
-.launch-button:hover {
-  border-color: #39FF14; /* Change border color on hover */
-}
 
 
 @keyframes fadeIn {
