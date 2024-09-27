@@ -49,8 +49,8 @@ const Providers = ({ children }) => {
       <QueryClientProvider client={queryClient}>
       <RainbowKitProvider
         theme={lightTheme({
-          accentColor: "#31d911",
-          accentColorForeground: "black",
+          accentColor: "#FF8B00",
+          accentColorForeground: "white",
           borderRadius: "medium",
           fontStack: "system",
           overlayBlur: "none",

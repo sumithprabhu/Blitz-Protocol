@@ -1,136 +1,104 @@
 "use client";
-import { useState } from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import VideoOverlay from "../components/VideoOverlay";
-import BackgroundFlow from "../components/BackgroundFlow";
+import Header from "../components/Header"; // Assuming you have the Header component
+import Footer from "../components/Footer"; // Assuming you have the Footer component
+import Link from "next/link"; // For navigation
+import Image from "next/image"; // For images
+import animationData from "../../public/animation-home.json";
+import Lottie from "react-lottie-player";
+import animationDataLive from "../../public/animation-live.json";
 
-export default function Home() {
-  const [showContent, setShowContent] = useState(false);
-
-  const handleVideoEnd = () => {
-    setShowContent(true);
-  };
-
+export default function HeroSection() {
   return (
-    <div className="flex flex-col min-h-screen bg-black">
-      {!showContent && <VideoOverlay onVideoEnd={handleVideoEnd} />}
-      {showContent && (
-        <>
-          <Header />
-          <main className="flex-grow flex flex-col justify-center items-center text-center text-white animate-slideIn relative">
-            <BackgroundFlow />
+    <div className="bg-black text-white min-h-screen">
+      {/* Include the Header */}
+      <Header />
 
-            <div className="content-container p-6 md:p-12 text-center">
-              <h2 className="text-4xl font-bold mb-6">
-                Querying Your Blockchain Data Has Never Been Simpler
-              </h2>
-              <p className="text-lg max-w-4xl mx-auto mb-8">
-                The Blitz Protocol revolutionizes how you interact with
-                blockchain data. Whether you&apos;re working with smart contracts or
-                needing to query specific data points, Blitz Protocol provides a
-                seamless and efficient solution. Tailored for modern
-                decentralized applications, Blitz ensures your data is securely
-                indexed and quickly retrievable, making it the go-to choice for
-                developers and enterprises alike.
-              </p>
+      {/* Hero Section */}
+      <section className="min-h-screen flex flex-col justify-between">
+  {/* Upper Section (Text and Animation) */}
+  <div className="flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto py-16 px-6 md:px-12" style={{ marginTop: '15rem' }}>
+    {/* Text Section */}
+    <div className="md:w-1/2">
+      <div className="bg-[#2a2a2a] text-white py-1 px-3 mb-4 rounded-xl flex items-center border border-[#C0C0C0] shadow-lg" style={{ maxWidth: '80%' }}>
+        <Lottie
+          loop
+          animationData={animationDataLive}
+          play
+          speed={0.5}
+          style={{
+            width: 150,
+            height: 150,
+            marginTop: "-2rem",
+            marginBottom: "-5rem",
+            marginLeft: "-3rem",
+            marginRight: "-2rem",
+          }}
+        />
+        <span className="text-md">
+          Blitz Protocol is Now Live on EDU Chain Testnet
+        </span>
+      </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-                <div className="bg-gray-800 p-6 rounded-lg shadow-lg hover:bg-gray-700 transition">
-                  <h3 className="text-2xl font-semibold mb-4">Playground</h3>
-                  <p className="text-gray-300 mb-6">
-                    Test and deploy your smart contracts seamlessly with our
-                    intuitive interface. The playground is designed for
-                    developers to experiment and refine their contracts.
-                  </p>
-                  <a
-                    href="/playground"
-                    className="text-blue-500 hover:text-blue-700 flex items-center justify-center"
-                  >
-                    <span className="mr-2">Launch Playground</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                      stroke="currentColor"
-                      className="w-6 h-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13 5l7 7-7 7M5 12h14"
-                      />
-                    </svg>
-                  </a>
-                </div>
+      <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 mt-[2rem]">
+        The Future of Blockchain Data
+      </h1>
+      <p className="text-xl text-[#FEFFDB] mb-6">
+        Blitz Protocol is designed to make querying blockchain data faster,
+        simpler, and more efficient. Power your decentralized applications
+        with secure, indexed, and easily retrievable data.
+      </p>
+      <Link href="/docs">
+        <button className="bg-[#de7800] text-white font-bold py-3 px-8 rounded-lg mt-[1rem] transition-transform duration-300 ease-in-out transform hover:scale-110 hover:cursor-pointer">
+          Start Building
+        </button>
+      </Link>
+    </div>
 
-                <div className="bg-gray-800 p-6 rounded-lg shadow-lg hover:bg-gray-700 transition">
-                  <h3 className="text-2xl font-semibold mb-4">Explore</h3>
-                  <p className="text-gray-300 mb-6">
-                    Browse through various subgraphs and discover the potential
-                    of decentralized data querying. Explore the powerful tools
-                    Blitz offers to make your data work for you.
-                  </p>
-                  <a
-                    href="/explore"
-                    className="text-blue-500 hover:text-blue-700 flex items-center justify-center"
-                  >
-                    <span className="mr-2">Explore Now</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                      stroke="currentColor"
-                      className="w-6 h-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13 5l7 7-7 7M5 12h14"
-                      />
-                    </svg>
-                  </a>
-                </div>
+    {/* Graphic Section */}
+    <div className="md:w-1/2 relative mt-10 md:mt-0 ml[2rem]">
+      {/* Placeholder for image */}
+      <Lottie
+        loop
+        animationData={animationData}
+        play
+        speed={0.7}
+        style={{
+          width: 600,
+          height: 600,
+          margin: "0 auto",
+          position: "absolute",
+          bottom: "-16rem",
+        }}
+      />
+    </div>
+  </div>
 
-                <div className="bg-gray-800 p-6 rounded-lg shadow-lg hover:bg-gray-700 transition">
-                  <h3 className="text-2xl font-semibold mb-4">
-                    Generate API Key
-                  </h3>
-                  <p className="text-gray-300 mb-6">
-                    Quickly generate an API key to start querying data from the
-                    Blitz Protocol. Your gateway to secure and efficient
-                    blockchain data access.
-                  </p>
-                  <br></br>
-                  <a
-                    href="/api"
-                    className="text-blue-500 hover:text-blue-700 flex items-center justify-center"
-                  >
-                    <span className="mr-2">Get Your API Key</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                      stroke="currentColor"
-                      className="w-6 h-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13 5l7 7-7 7M5 12h14"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </main>
-          <Footer />
-        </>
-      )}
+  {/* Stats Section */}
+  <div className="bg-black text-white py-8 border border-[#FF8B00] border-opacity-60 shadow-lg mx-auto mt-[1rem] rounded-3xl" style={{ minWidth: '70%', marginBottom: '2rem' }}>
+    <div className="flex flex-col md:flex-row justify-around items-center max-w-7xl mx-auto px-6 md:px-12">
+      <div className="text-center mb-6 md:mb-0">
+        <h3 className="text-4xl font-bold">100+</h3>
+        <p className="text-[#FEFFDB]">Data Queries Processed</p>
+      </div>
+      <div className="text-center mb-6 md:mb-0">
+        <h3 className="text-4xl font-bold">10+</h3>
+        <p className="text-[#FEFFDB]">Total Contracts Indexed</p>
+      </div>
+      <div className="text-center mb-6 md:mb-0">
+        <h3 className="text-4xl font-bold">10+</h3>
+        <p className="text-[#FEFFDB]">Blitz Created</p>
+      </div>
+      <div className="text-center">
+        <h3 className="text-4xl font-bold">30+</h3>
+        <p className="text-[#FEFFDB]">Blockchain Events Indexed</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+      {/* Include the Footer */}
+      <Footer />
     </div>
   );
 }

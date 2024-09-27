@@ -4,6 +4,7 @@ import Footer from "../../components/Footer"; // Reuse your current Footer compo
 import animationData from "../../../public/animation-docs.json";
 import Lottie from "react-lottie-player";
 
+
 export default function DocumentationHub() {
   return (
     <div className="bg-[#FEFFDB] text-[#444444] min-h-screen">
