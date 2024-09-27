@@ -105,7 +105,6 @@ export default function HeroSection() {
         </div>
       </section>
 
-
       <section className="bg-black text-white py-16">
         <div className="max-w-7xl mx-auto text-center mb-8 mt-[7rem]">
           <h2 className="text-4xl font-bold mb-6">
@@ -231,54 +230,54 @@ export default function HeroSection() {
           }
         `}</style>
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto mt-[5rem] text-center">
-      {/* Box 1 */}
-      <div className="relative group bg-transparent rounded-3xl p-8 transition-all duration-300 ease-in-out shadow-[0_0_15px_#FF8B00] hover:shadow-[0_0_25px_#FF8B00]">
-        <h3 className="text-2xl font-semibold mb-4 text-white">
-          Optimized for Efficiency
-        </h3>
-        <p className="text-gray-400">
-          Whether you're building a DAO, managing NFT collections, or scaling
-          infrastructure, Blitz Protocol makes querying blockchain data fast,
-          simple, and reliable.
-        </p>
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto mt-[5rem] text-center">
+          {/* Box 1 */}
+          <div className="relative group bg-transparent rounded-3xl p-8 transition-all duration-300 ease-in-out shadow-[0_0_15px_#FF8B00] hover:shadow-[0_0_25px_#FF8B00]">
+            <h3 className="text-2xl font-semibold mb-4 text-white">
+              Optimized for Efficiency
+            </h3>
+            <p className="text-gray-400">
+              Whether you`&apos;`re building a DAO, managing NFT collections, or
+              scaling infrastructure, Blitz Protocol makes querying blockchain
+              data fast, simple, and reliable.
+            </p>
+          </div>
 
-      {/* Box 2 */}
-      <div className="relative group bg-transparent  rounded-3xl p-8 transition-all duration-300 ease-in-out shadow-[0_0_15px_#FF8B00] hover:shadow-[0_0_25px_#FF8B00]">
-        <h3 className="text-2xl font-semibold mb-4 text-white">
-          Built for All Developers
-        </h3>
-        <p className="text-gray-400">
-          From small teams to large-scale projects, our flexible tools and
-          reliable indexing make Blitz Protocol a perfect choice for all types
-          of decentralized applications.
-        </p>
-      </div>
+          {/* Box 2 */}
+          <div className="relative group bg-transparent  rounded-3xl p-8 transition-all duration-300 ease-in-out shadow-[0_0_15px_#FF8B00] hover:shadow-[0_0_25px_#FF8B00]">
+            <h3 className="text-2xl font-semibold mb-4 text-white">
+              Built for All Developers
+            </h3>
+            <p className="text-gray-400">
+              From small teams to large-scale projects, our flexible tools and
+              reliable indexing make Blitz Protocol a perfect choice for all
+              types of decentralized applications.
+            </p>
+          </div>
 
-      {/* Box 3 */}
-      <div className="relative group bg-transparent rounded-3xl p-8 transition-all duration-300 ease-in-out shadow-[0_0_15px_#FF8B00] hover:shadow-[0_0_25px_#FF8B00]">
-        <h3 className="text-2xl font-semibold mb-4 text-white">
-          Scalable for Every Use Case
-        </h3>
-        <p className="text-gray-400">
-          Blitz Protocol is built to handle the most demanding use cases across
-          gaming, infrastructure, and more, ensuring consistency and performance
-          every time.
-        </p>
-      </div>
+          {/* Box 3 */}
+          <div className="relative group bg-transparent rounded-3xl p-8 transition-all duration-300 ease-in-out shadow-[0_0_15px_#FF8B00] hover:shadow-[0_0_25px_#FF8B00]">
+            <h3 className="text-2xl font-semibold mb-4 text-white">
+              Scalable for Every Use Case
+            </h3>
+            <p className="text-gray-400">
+              Blitz Protocol is built to handle the most demanding use cases
+              across gaming, infrastructure, and more, ensuring consistency and
+              performance every time.
+            </p>
+          </div>
 
-      {/* Box 4 */}
-      <div className="relative group bg-transparent rounded-3xl p-8 transition-all duration-300 ease-in-out shadow-[0_0_15px_#FF8B00] hover:shadow-[0_0_25px_#FF8B00]">
-        <h3 className="text-2xl font-semibold mb-4 text-white">
-          Secure and Durable
-        </h3>
-        <p className="text-gray-400">
-          Your data is stored securely and indexed with durability in mind,
-          providing support for reorganizations and global replication.
-        </p>
-      </div>
-    </div>
+          {/* Box 4 */}
+          <div className="relative group bg-transparent rounded-3xl p-8 transition-all duration-300 ease-in-out shadow-[0_0_15px_#FF8B00] hover:shadow-[0_0_25px_#FF8B00]">
+            <h3 className="text-2xl font-semibold mb-4 text-white">
+              Secure and Durable
+            </h3>
+            <p className="text-gray-400">
+              Your data is stored securely and indexed with durability in mind,
+              providing support for reorganizations and global replication.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Include the Footer */}
