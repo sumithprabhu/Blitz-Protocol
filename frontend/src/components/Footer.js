@@ -24,7 +24,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-black text-white pt-16 pb-6 px-6">
+    <footer className="bg-black text-white pt-16 pb-6 px-6 border-t mt-[2rem]">
       {" "}
       {/* Increased the height with py-16 */}
       {/* Footer container */}
