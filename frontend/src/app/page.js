@@ -150,6 +150,8 @@ export default function HeroSection() {
         </div>
       </section>
 
+      <div className="border-t border-gray-800 pt-6 "></div>
+
       <section className="bg-black text-white py-16">
         <div className="max-w-7xl mx-auto text-center mb-8 mt-[7rem]">
           <h2 className="text-4xl font-bold mb-6">
@@ -325,6 +327,8 @@ export default function HeroSection() {
         </div>
       </section>
 
+      <div className="border-t border-gray-800 pt-6 "></div>
+
       <section className="max-w-7xl mx-auto py-16 px-6 md:px-12">
         <div className="flex flex-col md:flex-row justify-between">
           <div className="md:w-1/3">
@@ -358,6 +362,8 @@ export default function HeroSection() {
           </div>
         </div>
       </section>
+
+      <div className="border-t border-gray-800 pt-6 "></div>
 
       <section className="relative flex flex-col items-center justify-center h-[54rem]">
         {/* Background image with opacity */}
