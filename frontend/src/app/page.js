@@ -6,8 +6,53 @@ import Image from "next/image"; // For images
 import animationData from "../../public/animation-home.json";
 import Lottie from "react-lottie-player";
 import animationDataLive from "../../public/animation-live.json";
+import { useState } from "react";
 
 export default function HeroSection() {
+  const [openIndex, setOpenIndex] = useState(0);
+
+  const toggleFAQ = (index) => {
+    setOpenIndex(index === openIndex ? -1 : index); // Toggle logic
+  };
+
+  const faqs = [
+    {
+      question: "What is Blitz Protocol?",
+      answer:
+        "Blitz Protocol is a blockchain indexing and querying solution that simplifies data retrieval for decentralized applications. It enables fast, secure, and efficient querying of blockchain data across multiple use cases.",
+    },
+    {
+      question: "How does Blitz Protocol enhance dApp performance?",
+      answer:
+        "Blitz Protocol enhances performance by providing decentralized applications (dApps) with access to indexed blockchain data. This eliminates the need for custom backend systems and makes data retrieval faster and more efficient.",
+    },
+    {
+      question: "Is Blitz Protocol available for public use?",
+      answer:
+        "Yes, Blitz Protocol is available on the EDU Chain Testnet, and it will soon be launching on mainnet. Developers can start building and testing on the testnet version.",
+    },
+    {
+      question: "How can I integrate Blitz Protocol with my dApp?",
+      answer:
+        "Blitz Protocol provides a simple integration process. You can use our GraphQL or REST API to fetch data from the blockchain and connect it to your decentralized application. Detailed documentation is available on our developer portal.",
+    },
+    {
+      question: "What industries or use cases does Blitz Protocol support?",
+      answer:
+        "Blitz Protocol is built to support industries such as DeFi, gaming, NFT marketplaces, DAOs, and infrastructure applications. It is scalable and designed to handle demanding use cases across multiple sectors.",
+    },
+    {
+      question: "What is the cost of using Blitz Protocol?",
+      answer:
+        "Blitz Protocol is currently free to use during its testnet phase. Upon mainnet launch, a tiered pricing structure will be introduced based on the number of queries and resources consumed.",
+    },
+    {
+      question: "Is Blitz Protocol decentralized?",
+      answer:
+        "Yes, Blitz Protocol is decentralized by design. It utilizes multiple indexing nodes that work together to ensure that data is fetched, indexed, and queried in a secure and decentralized manner.",
+    },
+  ];
+
   return (
     <div className="bg-black text-white min-h-screen">
       {/* Include the Header */}
@@ -277,6 +322,73 @@ export default function HeroSection() {
               providing support for reorganizations and global replication.
             </p>
           </div>
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto py-16 px-6 md:px-12">
+        <div className="flex flex-col md:flex-row justify-between">
+          <div className="md:w-1/3">
+            <h2 className="text-4xl font-bold mb-6">
+              Frequently Asked Questions
+            </h2>
+            <a
+              href="https://t.me/blitzprotocol"
+              className="inline-block bg-[#de7800] text-white font-bold py-3 px-8 rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-105"
+            >
+              Join us on Telegram →
+            </a>
+          </div>
+          <div className="md:w-2/3 space-y-6">
+            {faqs.map((faq, index) => (
+              <div key={index} className="border-b border-gray-600">
+                <div
+                  className="flex justify-between items-center cursor-pointer py-4"
+                  onClick={() => toggleFAQ(index)}
+                >
+                  <h3 className="text-3xl">{faq.question}</h3>
+                  <span>{openIndex === index ? "−" : "+"}</span>
+                </div>
+                {openIndex === index && (
+                  <div className="text-gray-400 pb-4 transition-opacity duration-300">
+                    {faq.answer}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative flex flex-col items-center justify-center h-[54rem]">
+        {/* Background image with opacity */}
+        <div
+          className="absolute inset-0 bg-center bg-cover bg-no-repeat opacity-40 z-0"
+          style={{
+            backgroundImage: `url('/home-bottom-background.svg')`, // Assuming the SVG is in the public folder
+          }}
+        ></div>
+
+        {/* Logo behind text */}
+        <div className="absolute inset-0 flex justify-center items-center mt-[-19rem] z-10">
+          <img
+            src="/logo.png" // Path to your logo image in the public folder
+            alt="Blitz Protocol Logo"
+            className="opacity-30 h-[auto] w-[20%]" // Setting logo size here
+          />
+        </div>
+
+        {/* Text and button */}
+        <div className="relative z-20 text-center text-white mt-[-17rem]">
+          <h2 className="text-4xl font-bold mb-4">
+            Empower your dApp with seamless integration.
+          </h2>
+          <p className="text-lg mb-6">
+            Unlock the full potential of dApps with Blitz Protocol, enabling
+            smooth and efficient data access.
+          </p>
+          <button className="bg-[#de7800] text-white font-bold py-3 px-8 rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-110">
+            Start Building
+          </button>
         </div>
       </section>
 
