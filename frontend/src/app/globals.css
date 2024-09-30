@@ -82,27 +82,7 @@ body {
     transform: translateX(-100%); /* Move completely off-screen to the left */
   }
 }
-/* Position each line at different vertical heights */
-.line-0 { top: 5%; }
-.line-1 { top: 10%; }
-.line-2 { top: 15%; }
-.line-3 { top: 20%; }
-.line-4 { top: 25%; }
-.line-5 { top: 30%; }
-.line-6 { top: 35%; }
-.line-7 { top: 40%; }
-.line-8 { top: 45%; }
-.line-9 { top: 50%; }
-.line-10 { top: 55%; }
-.line-11 { top: 60%; }
-.line-12 { top: 65%; }
-.line-13 { top: 70%; }
-.line-14 { top: 75%; }
-.line-15 { top: 80%; }
-.line-16 { top: 85%; }
-.line-17 { top: 90%; }
-.line-18 { top: 95%; }
-.line-19 { top: 100%; }
+
 
 
 .content-container {
