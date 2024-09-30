@@ -11,7 +11,7 @@ export default function ExpandedCard({ protocol, onCollapse }) {
   };
 
   return (
-    <div className="bg-gray-800 p-10 rounded-lg shadow-lg w-full max-w-2xl mx-auto relative animate-fadeIn">
+    <div className="bg-[#202124] p-10 rounded-lg shadow-lg w-full max-w-2xl mx-auto relative animate-fadeIn">
       <button
         onClick={onCollapse}
         className="absolute top-7 right-7 text-white hover:text-red-500 text-2xl"
@@ -27,16 +27,16 @@ export default function ExpandedCard({ protocol, onCollapse }) {
         <h2 className="text-white text-3xl font-bold mb-6">{protocol.name}</h2>
         <div className="text-left">
           <p className="text-gray-400 mb-1">Contract Address</p>
-          <p className="text-white bg-gray-900 p-3 rounded-lg break-all mb-6">
+          <p className="text-white bg-[#313338] p-3 rounded-lg break-all mb-6">
             {protocol.contractAddress}
           </p>
           <p className="text-gray-400 mb-1">Query Slug</p>
-          <div className="flex items-center bg-gray-900 p-3 rounded-lg mb-2">
+          <div className="flex items-center bg-[#313338] p-3 rounded-lg mb-2">
             <div className="overflow-x-auto whitespace-nowrap">
               <p className="text-white break-all mr-2 mb-3">{`https://blitz-protocol-backend.vercel.app/api/{API_KEY}/${protocol.contractAddress}`}</p>
             </div>
             <button
-              onClick={() => handleCopy(protocol.querySlug)}
+              onClick={() => handleCopy(`https://blitz-protocol-backend.vercel.app/api/{API_KEY}/${protocol.contractAddress}`)}
               className="text-gray-400 hover:text-white"
             >
               <FaCopy />
@@ -44,13 +44,13 @@ export default function ExpandedCard({ protocol, onCollapse }) {
           </div>
 
           {copied && (
-            <p className="text-green-500 text-sm mt-2 text-center">
+            <p className="text-[#FF8B00] text-sm mt-2 text-center">
               Slug copied to clipboard!
             </p>
           )}
           <a
             href="/api"
-            className="text-blue-500 hover:text-blue-700 flex items-center justify-center mt-6"
+            className="text-[#FF8B00] hover:text-blue-700 flex items-center justify-center mt-6"
             target="_blank"
             rel="noopener noreferrer"
           >

@@ -56,7 +56,11 @@ export default function Playground() {
         setStep(2);
       }
     } else if (step === 2) {
+      if(!contractAddress || !contractABI) {
+        toast.error("Please enter the contract details to continue.");
+      } else {
       setStep(3);
+      }
     } else if (step === 3) {
       setIsLoading(true);
       const messages = [
@@ -169,7 +173,7 @@ export default function Playground() {
   return (
     <div className="flex flex-col min-h-screen bg-black text-white overflow-x-hidden">
       <Header />
-      <div className="mt-[6rem]">
+      <div className="mt-[6rem] h-screen">
         {" "}
         {/* Add margin to accommodate the floating header */}
         <UserSection
