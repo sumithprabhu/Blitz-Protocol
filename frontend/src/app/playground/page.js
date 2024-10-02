@@ -1,18 +1,22 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import UserSection from "../../components/userSection";
 import Lottie from "react-lottie-player";
 import animationData from "../../../public/animation.json";
+import axios from "axios"; // Axios is commonly used for HTTP requests
 import { FaCheckCircle } from "react-icons/fa"; // Icon for progress
 import {
   useAccount,
   useWaitForTransactionReceipt,
+  useWaitForTransaction,
   useWriteContract,
+  useReadContract,
 } from "wagmi";
 import contract_ABI from "../../constants/contract_abi.js";
 import toast from "react-hot-toast";
+import { ethers } from "ethers";
 
 export default function Playground() {
   const [step, setStep] = useState(1);
@@ -25,8 +29,36 @@ export default function Playground() {
   const [queryResult, setQueryResult] = useState("");
   const { address } = useAccount();
   const { data: hash, writeContractAsync } = useWriteContract();
-  const { isLoading: isConfirming, isSuccess: isConfirmed } =
-    useWaitForTransactionReceipt({ hash });
+  const [transactionHash, setTransactionHash] = useState(""); // Store transaction hash
+  const { isLoading: isConfirming, isError, isSuccess } = useWaitForTransactionReceipt({
+    hash: transactionHash,
+    onSuccess(data) {
+      setLoadingMessage("Blitz created successfully!");
+      setIsLoading(false);
+      toast.success("Blitz created successfully!");
+    },
+    onError(error) {
+      setLoadingMessage(""); // Clear loading message
+      setIsLoading(false);
+      toast.error("Smart contract execution failed. Please try again.");
+      console.error("Transaction failed", error);
+    },
+  });
+  const { data: hasBlitz } = useReadContract({
+    address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+    abi: contract_ABI,
+    chainId: 656476,
+    functionName: "hasBlitz",
+    args: [address],
+  });
+
+  useEffect(() => {
+    if(hasBlitz){
+      setStep(4)
+      toast.success("Blitz Already Created, one per address");
+    }
+  },[hasBlitz])
+  
 
   const [queryText, setQueryText] = useState(`{
       contract {
@@ -56,33 +88,11 @@ export default function Playground() {
         setStep(2);
       }
     } else if (step === 2) {
-      if(!contractAddress || !contractABI) {
+      if (!contractAddress || !contractABI) {
         toast.error("Please enter the contract details to continue.");
       } else {
-      setStep(3);
+        setStep(3);
       }
-    } else if (step === 3) {
-      setIsLoading(true);
-      const messages = [
-        "Initializing transaction.",
-        "Verfying Blitz details",
-        "Creating Blitz",
-        "Finalising transaction",
-      ];
-
-      const totalDuration = 30000; // 30 seconds
-      const interval = totalDuration / messages.length; // Time each message stays on screen
-
-      messages.forEach((message, index) => {
-        setTimeout(() => {
-          setLoadingMessage(message);
-        }, index * interval);
-      });
-
-      setTimeout(() => {
-        setIsLoading(false);
-        setStep(4);
-      }, totalDuration);
     }
   };
 
@@ -121,54 +131,82 @@ export default function Playground() {
   };
 
   const handleInitiateTransaction = async () => {
+    if (!address) {
+      toast.error("Please connect your wallet to continue.");
+      return;
+    }
+  
     try {
-      handleNextStep();
-      const count = await writeContractAsync({
+      setIsLoading(true); // Start loader
+      setLoadingMessage("Initializing transaction..."); // Step 1 message
+  
+      const weiValue = ethers.parseEther((0.01).toString(), "ether");
+  
+      // Initiating smart contract transaction
+      const transaction = await writeContractAsync({
         address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
         abi: contract_ABI,
         chainId: 656476,
         functionName: "createBlitz",
-        args: [address],
+        args: [protocolName, contractAddress],
+        value: weiValue,
       });
-      console.log(count);
-      console.log("Transaction initiated successfully");
-      // Prepare the payload
+  
+      setLoadingMessage("Verifying Blitz details..."); // Step 2 message
+      setTransactionHash(transaction.hash);
+
+      
+  
+      // Parse ABI
       let parsedABI;
       try {
         parsedABI = JSON.parse(contractABI);
       } catch (error) {
         console.error("Error parsing contract ABI:", error);
+        toast.error("Error parsing contract ABI. Please check your input.");
+        setIsLoading(false); // Stop loader if there's an error
         return;
       }
-
+  
+      // Prepare payload for backend request
       const payload = {
         contractAddress,
         contractABI: parsedABI,
         protocolName,
-        imageUrl: protocolImage, // Replace 'default-image-url' with an appropriate placeholder if needed
+        imageUrl: protocolImage,
       };
-
-      console.log("Payload:", payload);
-
-      // Make the POST request to the backend
+  
+      setLoadingMessage("Finalizing transaction..."); // Step 4 message
+  
+      // Making POST request to backend
       const response = await axios.post(
         `https://blitz-protocol-backend.vercel.app/register`,
         payload
       );
-
-      // Handle the response from the backend
+  
+      // Handle backend response
       if (response.status === 200) {
         console.log("Protocol registered successfully:", response.data);
-        // You can update the state or trigger any success behavior here
+        toast.success("Protocol registered successfully!");
+        setStep(4); // Move to the next step after success
       } else {
         console.error("Failed to register protocol:", response.data);
-        // Handle failure case (e.g., show an error message to the user)
+        toast.error("Backend registration failed. Please try again.");
       }
+  
     } catch (error) {
       console.error("An error occurred during the transaction:", error);
-      // Handle error case (e.g., show an error message to the user)
+      if (error.reason === "Transaction failed" || error.message.includes("revert")) {
+        toast.error("Smart contract execution failed. Please make sure you are using different contract address every time to create a Blitz.");
+      } else {
+        toast.error("An unexpected error occurred. Please try again.");
+      }
+    } finally {
+      setIsLoading(false); // Always stop loader at the end of the process
     }
   };
+  
+  
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white overflow-x-hidden">
@@ -274,6 +312,40 @@ export default function Playground() {
             <p className="mb-4 text-gray-300">
               Ensure the contract details are correct before proceeding.
             </p>
+
+            {/* Blitz Creation Fee Section */}
+            <div className="flex justify-between items-center bg-[#313338] p-4 rounded-lg mb-6 w-[90%]">
+              <span className="text-lg font-bold text-white">
+                Blitz Creation Fee:
+              </span>
+              <span className="text-lg font-bold text-orange-500">
+                0.01 EDU
+              </span>
+            </div>
+
+            {/* Additional Information */}
+            <p className="text-sm text-gray-400 mb-4">
+              Incase you are looking for a Testnet Faucet, check out:{" "}
+              <a
+                href="https://educhain-community-faucet.vercel.app/"
+                className="text-orange-500 hover:text-orange-400"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Community Faucet
+              </a>{" "}
+              or{" "}
+              <a
+                href="https://drpc.org/faucet/open-campus-codex"
+                className="text-orange-500 hover:text-orange-400"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                dRPC Faucet
+              </a>
+            </p>
+
+            {/* Initiate Transaction Button */}
             <button
               onClick={handleInitiateTransaction}
               className="px-8 py-4 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-transform duration-300 ease-in-out"
