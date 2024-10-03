@@ -83,6 +83,27 @@ app.get('/blitz', async (req, res) => {
     }
 });
 
+app.get('/blitz/:id', async (req, res) => {
+    try {
+      const blitzId = req.params.id;
+  
+      // Find the Blitz entry by _id
+      const blitzEntry = await Blitz.findById(blitzId);
+  
+      // If the entry is not found, return a 404 response
+      if (!blitzEntry) {
+        return res.status(404).json({ message: 'Blitz entry not found' });
+      }
+  
+      // Return the found entry
+      return res.status(200).json(blitzEntry);
+    } catch (error) {
+      console.error('Error fetching Blitz entry:', error);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+
+  
 // GraphQL middleware for handling GraphQL queries
 app.use('/api/:apikey/:contractAddress', async (req, res, next) => {
     const { apikey, contractAddress } = req.params;
