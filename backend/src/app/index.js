@@ -41,7 +41,10 @@ app.post('/register', async (req, res) => {
         });
         await newBlitz.save();
 
-        return res.status(200).json({ message: 'Protocol registered and event storage initialized successfully.' });
+        return res.status(200).json({
+            message: 'Protocol registered and event storage initialized successfully.',
+            _id: newBlitz._id, // Return the MongoDB document _id
+        });
     } catch (error) {
         console.error('Error registering protocol or initializing event storage:', error);
         return res.status(500).json({ error: 'Internal server error' });
