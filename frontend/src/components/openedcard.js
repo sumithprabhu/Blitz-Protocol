@@ -20,11 +20,11 @@ export default function ExpandedCard({ protocol, onCollapse }) {
       </button>
       <div className="text-center">
         <img
-          src={protocol.image}
-          alt={protocol.name}
+          src={protocol.imageUrl}
+          alt={protocol.protocolName}
           className="w-32 h-32 rounded-full mx-auto mb-6"
         />
-        <h2 className="text-white text-3xl font-bold mb-6">{protocol.name}</h2>
+        <h2 className="text-white text-3xl font-bold mb-6">{protocol.protocolName}</h2>
         <div className="text-left">
           <p className="text-gray-400 mb-1">Contract Address</p>
           <p className="text-white bg-[#313338] p-3 rounded-lg break-all mb-6">

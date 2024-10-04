@@ -14,7 +14,6 @@ export default function Header() {
   const [isDropdownHovered, setIsDropdownHovered] = useState(false);
   const [isOnIt, setIsOnIt] = useState(true);
 
-
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPosition = window.scrollY;
@@ -42,14 +41,12 @@ export default function Header() {
   const handleMouseLeave = () => {
     if (!isDropdownHovered) {
       setIsDropdownOpen(false);
-    }
-    else if(!isOnIt){
+    } else if (!isOnIt) {
       setTimeout(() => {
         // Code to execute after 1 second (1000 milliseconds)
         setIsDropdownOpen(false); // Example: setting a state or variable
       }, 500);
     }
-    
   };
 
   const handleDropdownEnter = () => {
@@ -86,7 +83,9 @@ export default function Header() {
           </a>
         </Link>
 
-        <div className="relative flex items-center space-x-12"> {/* Added spacing */}
+        <div className="relative flex items-center space-x-12">
+          {" "}
+          {/* Added spacing */}
           {/* Products Dropdown */}
           <div
             onMouseEnter={handleMouseEnter}
@@ -103,38 +102,45 @@ export default function Header() {
                 onMouseLeave={handleDropdownLeave}
               >
                 <ul className="space-y-6">
-                  <li className="flex items-start hover:bg-[#313338] rounded-lg p-3 transition-all"> {/* Light gray on hover with rounded border */}
-                    <div className="flex-grow">
-                      <Link href="/blitz-explorer" legacyBehavior>
-                        <a className="text-white  font-semibold">Blitz Explorer</a>
-                      </Link>
-                      <p className="text-gray-400 text-sm">
-                        Explore blockchain with Blitz Protocol.
-                      </p>
-                    </div>
-                  </li>
-                  <li className="flex items-start hover:bg-[#313338] hover:text-white rounded-lg p-3 transition-all"> {/* Light gray on hover with rounded border */}
-                    <div className="flex-grow">
-                      <Link href="/playground" legacyBehavior>
-                        <a className="text-white font-semibold">Playground</a>
-                      </Link>
-                      <p className="text-gray-400 text-sm">
-                        Interact and build with Blitz Protocol.
-                      </p>
-                    </div>
-                  </li>
+                  <Link href="/explore" legacyBehavior>
+                    <li className="flex items-start hover:bg-[#313338] rounded-lg p-3 transition-all cursor-pointer group">
+                      {" "}
+                      {/* Group added */}
+                      <div className="flex-grow">
+                        <a className="text-white font-semibold group-hover:text-[#FF8B00]">
+                          Blitz Explorer
+                        </a>
+                        <p className="text-gray-400 text-sm">
+                          Explore blockchain with Blitz Protocol.
+                        </p>
+                      </div>
+                    </li>
+                  </Link>
+
+                  <Link href="/playground" legacyBehavior>
+                    <li className="flex items-start hover:bg-[#313338] rounded-lg p-3 transition-all cursor-pointer group">
+                      {" "}
+                      {/* Group added */}
+                      <div className="flex-grow">
+                        <a className="text-white font-semibold group-hover:text-[#FF8B00]">
+                          Playground
+                        </a>
+                        <p className="text-gray-400 text-sm">
+                          Interact and build with Blitz Protocol.
+                        </p>
+                      </div>
+                    </li>
+                  </Link>
                 </ul>
               </div>
             )}
           </div>
-
           {/* Docs link */}
           <div>
             <Link href="/docs" legacyBehavior>
               <a className="text-white text-lg font-semibold">Docs</a>
             </Link>
           </div>
-
           {/* Launch Playground or Connect Wallet */}
           {isRootPage ? (
             <a
