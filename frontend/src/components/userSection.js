@@ -4,7 +4,7 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 export default function UserSection({ user }) {
   return (
     <div
-      className="sticky top-0 z-20 w-[85%] p-6 shadow-lg rounded-3xl my-4 mx-auto mt-[3rem]"
+      className=" top-0 z-20 w-[85%] p-6 shadow-lg rounded-3xl my-4 mx-auto mt-[3rem]"
       style={{
         backgroundColor: "#202124", // Gradient background
         border: "1px solid #FF8B00", // Orange border to highlight section

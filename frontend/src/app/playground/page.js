@@ -1,5 +1,5 @@
 "use client";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import UserSection from "../../components/userSection";
@@ -30,7 +30,11 @@ export default function Playground() {
   const { address } = useAccount();
   const { data: hash, writeContractAsync } = useWriteContract();
   const [transactionHash, setTransactionHash] = useState(""); // Store transaction hash
-  const { isLoading: isConfirming, isError, isSuccess } = useWaitForTransactionReceipt({
+  const {
+    isLoading: isConfirming,
+    isError,
+    isSuccess,
+  } = useWaitForTransactionReceipt({
     hash: transactionHash,
     onSuccess(data) {
       setLoadingMessage("Blitz created successfully!");
@@ -52,13 +56,52 @@ export default function Playground() {
     args: [address],
   });
 
-  useEffect(() => {
-    if(hasBlitz){
-      setStep(4)
-      toast.success("Blitz Already Created, one per address");
+  const { data: blitz_id } = useReadContract({
+    address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+    abi: contract_ABI,
+    chainId: 656476,
+    functionName: "getBlitz",
+    args: [address],
+  });
+  async function fetchBlitzDataById(id) {
+    try {
+      // Fetch data from the backend using the provided _id
+      const response = await axios.get(
+        `https://blitz-protocol-backend.vercel.app/blitz/${id}`
+      );
+
+      // The response contains the specific Blitz data for the provided _id
+      const blitzData = response.data;
+
+      return blitzData; // Return the data for further use
+    } catch (error) {
+      console.error("Error fetching Blitz data by ID:", error);
+      return null; // Return null in case of error
     }
-  },[hasBlitz])
-  
+  }
+
+  useEffect(() => {
+    const fetchBlitzData = async () => {
+      if (blitz_id) {
+        try {
+          const blitzData = await fetchBlitzDataById(blitz_id);
+          console.log(blitzData);
+          setProtocolName(blitzData.protocolName);
+          setProtocolImage(blitzData.imageUrl);
+          setContractAddress(blitzData.contractAddress);
+        } catch (error) {
+          console.error("Error fetching blitz data:", error);
+        }
+      }
+
+      if (hasBlitz && blitz_id) {
+        setStep(4);
+        toast.success("Blitz Already Created, one per address");
+      }
+    };
+
+    fetchBlitzData();
+  }, [blitz_id, hasBlitz]);
 
   const [queryText, setQueryText] = useState(`{
       contract {
@@ -76,8 +119,8 @@ export default function Playground() {
   const steps = [
     { label: "Protocol Details" },
     { label: "Contract Details" },
-    { label: "Transaction Initiation" },
-    { label: "Query" },
+    { label: "Initiate Transaction" },
+    { label: "Test It Out" },
   ];
 
   const handleNextStep = () => {
@@ -90,17 +133,43 @@ export default function Playground() {
     } else if (step === 2) {
       if (!contractAddress || !contractABI) {
         toast.error("Please enter the contract details to continue.");
+      } else if (!ethers.isAddress(contractAddress)) {
+        toast.error("Invalid contract address.");
       } else {
-        setStep(3);
+        try {
+          const parsedABI = JSON.parse(contractABI);
+          if (!Array.isArray(parsedABI)) {
+            toast.error("Invalid ABI format. Must be an array.");
+          } else {
+            setStep(3);
+          }
+        } catch (error) {
+          toast.error("Invalid ABI JSON format.");
+        }
       }
     }
   };
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    setProtocolImage(
-      "https://github.com/sumithprabhu/Blitz-Protocol/blob/main/frontend/public/profile.jpeg?raw=true"
-    );
+
+    // Limit file size to 2MB
+    const maxSize = 2 * 1024 * 1024; // 2MB
+
+    if (file.size > maxSize) {
+      toast.error("File size exceeds 2MB. Please choose a smaller image.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result;
+      setProtocolImage(base64String); // Set the base64 string as the protocol image
+    };
+
+    if (file) {
+      reader.readAsDataURL(file); // Convert the file to base64 format
+    }
   };
 
   const handleQuery = async () => {
@@ -135,29 +204,11 @@ export default function Playground() {
       toast.error("Please connect your wallet to continue.");
       return;
     }
-  
+
     try {
       setIsLoading(true); // Start loader
       setLoadingMessage("Initializing transaction..."); // Step 1 message
-  
-      const weiValue = ethers.parseEther((0.01).toString(), "ether");
-  
-      // Initiating smart contract transaction
-      const transaction = await writeContractAsync({
-        address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
-        abi: contract_ABI,
-        chainId: 656476,
-        functionName: "createBlitz",
-        args: [protocolName, contractAddress],
-        value: weiValue,
-      });
-  
-      setLoadingMessage("Verifying Blitz details..."); // Step 2 message
-      setTransactionHash(transaction.hash);
 
-      
-  
-      // Parse ABI
       let parsedABI;
       try {
         parsedABI = JSON.parse(contractABI);
@@ -167,7 +218,6 @@ export default function Playground() {
         setIsLoading(false); // Stop loader if there's an error
         return;
       }
-  
       // Prepare payload for backend request
       const payload = {
         contractAddress,
@@ -175,29 +225,53 @@ export default function Playground() {
         protocolName,
         imageUrl: protocolImage,
       };
-  
-      setLoadingMessage("Finalizing transaction..."); // Step 4 message
-  
+
       // Making POST request to backend
       const response = await axios.post(
         `https://blitz-protocol-backend.vercel.app/register`,
         payload
       );
-  
+      // const response = await axios.post(
+      //   `https://localhost:3000/register`,
+      //   payload
+      // );
+      const entry_id = response.data._id;
+
+      const weiValue = ethers.parseEther((0.01).toString(), "ether");
+
+      // Initiating smart contract transaction
+      const transaction = await writeContractAsync({
+        address: process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+        abi: contract_ABI,
+        chainId: 656476,
+        functionName: "createBlitz",
+        args: [protocolName, contractAddress, entry_id],
+        value: weiValue,
+      });
+
+      setLoadingMessage("Verifying Blitz details..."); // Step 2 message
+      setTransactionHash(transaction.hash);
+
+      // Parse ABI
+
       // Handle backend response
       if (response.status === 200) {
-        console.log("Protocol registered successfully:", response.data);
+        console.log("Protocol registered successfully:", response.data._id);
         toast.success("Protocol registered successfully!");
         setStep(4); // Move to the next step after success
       } else {
         console.error("Failed to register protocol:", response.data);
         toast.error("Backend registration failed. Please try again.");
       }
-  
     } catch (error) {
       console.error("An error occurred during the transaction:", error);
-      if (error.reason === "Transaction failed" || error.message.includes("revert")) {
-        toast.error("Smart contract execution failed. Please make sure you are using different contract address every time to create a Blitz.");
+      if (
+        error.reason === "Transaction failed" ||
+        error.message.includes("revert")
+      ) {
+        toast.error(
+          "Smart contract execution failed. Please make sure you are using different contract address every time to create a Blitz."
+        );
       } else {
         toast.error("An unexpected error occurred. Please try again.");
       }
@@ -205,13 +279,11 @@ export default function Playground() {
       setIsLoading(false); // Always stop loader at the end of the process
     }
   };
-  
-  
 
   return (
-    <div className="flex flex-col min-h-screen bg-black text-white overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-black text-white overflow-x-hidden  h-[calc(100vh-8rem)] overflow-y-auto">
       <Header />
-      <div className="mt-[6rem] h-screen">
+      <div className="mt-[6rem] ">
         {" "}
         {/* Add margin to accommodate the floating header */}
         <UserSection
@@ -367,20 +439,22 @@ export default function Playground() {
               <h1 className="text-3xl font-bold mb-6 text-center text-white">
                 Processing
               </h1>
-              <div className="text-xl text-gray-300">{loadingMessage}</div>
+              <div className="text-xl text-center text-gray-300">
+                {loadingMessage}
+              </div>
             </div>
           </div>
         )}
         {/* Step 4: Query */}
         {step === 4 && !isLoading && (
-          <div className="w-full max-w-6xl p-12 bg-[#202124] rounded-lg shadow-lg flex mx-auto mt-10">
+          <div className="w-full max-w-7xl min-h-[40rem] p-12 bg-[#202124] rounded-lg shadow-lg flex mx-auto mt-10">
             <div className="w-1/2 p-4">
               <h2 className="text-xl font-bold mb-4 text-white">
                 Query the Contract
               </h2>
               <textarea
                 placeholder="Enter your query"
-                className="w-full p-3 mb-4 bg-[#313338] text-white rounded-lg border border-[#5a5a5a] focus:outline-none focus:ring-2 focus:ring-orange-400"
+                className="w-[33rem] h-[80%] p-3 mb-4 bg-[#313338] text-white rounded-lg border border-[#5a5a5a] focus:outline-none focus:ring-2 focus:ring-orange-400"
                 rows="8"
                 value={queryText}
                 onChange={(e) => setQueryText(e.target.value)}
@@ -392,7 +466,7 @@ export default function Playground() {
                 Run Query
               </button>
             </div>
-            <div className="w-1/2 p-4 bg-[#202124] rounded-lg">
+            <div className="w-1/2 p-4 bg-[#202124] border-white border rounded-lg overflow-x-auto overflow-y-auto max-h-[30rem]">
               <h2 className="text-xl font-bold mb-4 text-white">
                 Query Result
               </h2>

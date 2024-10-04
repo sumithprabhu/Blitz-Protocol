@@ -30,6 +30,12 @@ const contract_ABI=[
 				"internalType": "address",
 				"name": "protocolContractAddress",
 				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "_id",
+				"type": "string"
 			}
 		],
 		"name": "BlitzCreated",
@@ -55,31 +61,6 @@ const contract_ABI=[
 		"type": "event"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "protocolName",
-				"type": "string"
-			},
-			{
-				"internalType": "address",
-				"name": "protocolContractAddress",
-				"type": "address"
-			}
-		],
-		"name": "createBlitz",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "deactivateBlitz",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -97,32 +78,6 @@ const contract_ABI=[
 		],
 		"name": "OwnershipTransferred",
 		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "newFee",
-				"type": "uint256"
-			}
-		],
-		"name": "setBlitzCreationFee",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address payable",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "transferOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
 	},
 	{
 		"inputs": [],
@@ -166,34 +121,60 @@ const contract_ABI=[
 				"internalType": "address",
 				"name": "protocolContractAddress",
 				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_id",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "getBlitz",
-		"outputs": [
+		"inputs": [
 			{
 				"internalType": "string",
 				"name": "protocolName",
 				"type": "string"
 			},
 			{
-				"internalType": "uint256",
-				"name": "timestamp",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bool",
-				"name": "isActive",
-				"type": "bool"
-			},
-			{
 				"internalType": "address",
 				"name": "protocolContractAddress",
 				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_id",
+				"type": "string"
+			}
+		],
+		"name": "createBlitz",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "deactivateBlitz",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			}
+		],
+		"name": "getBlitz",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "_id",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",
@@ -271,6 +252,19 @@ const contract_ABI=[
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "newFee",
+				"type": "uint256"
+			}
+		],
+		"name": "setBlitzCreationFee",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "totalBlitzCount",
 		"outputs": [
@@ -281,6 +275,19 @@ const contract_ABI=[
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]
