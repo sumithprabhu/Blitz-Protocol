@@ -7,7 +7,7 @@ export default{
   },
     "Quick-Start" : "Quick Start",
     "Creating-a-Blitz": "Creating a Blitz",
-    "Querying-from-an-application": "Querying From an Application",
+    "Querying-from-an-application": "Querying from an Application",
     "products":
     {
         "title": "Products",        
