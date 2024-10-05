@@ -5,8 +5,8 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { useAccount } from "wagmi";
 import { FaCopy } from "react-icons/fa";
-import BackgroundFlow from "../../components/BackgroundFlow";
-
+import Lottie from "react-lottie-player";
+import animationData from "../../../public/animation-home.json"; // Adjust path if needed
 
 export default function ApiRoutePage() {
   const { address, isConnected } = useAccount();
@@ -23,13 +23,16 @@ export default function ApiRoutePage() {
     try {
       setLoading(true); // Start loading
 
-      const response = await fetch("https://blitz-protocol-backend.vercel.app/createUser", {
-        method: "POST",
-        body: JSON.stringify({ walletAddress: address }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "https://blitz-protocol-backend.vercel.app/createUser",
+        {
+          method: "POST",
+          body: JSON.stringify({ walletAddress: address }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
       setApiKey(data.apiKey || "your-generated-api-key");
@@ -53,50 +56,78 @@ export default function ApiRoutePage() {
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
       <Header />
-      <BackgroundFlow />
 
-      <main className="flex-grow p-6 flex flex-col justify-center items-center z-10">
-        <div className="w-full max-w-2xl p-8 bg-gray-800 rounded-lg shadow-lg">
-          <h1 className="text-3xl font-bold mb-6 text-center">Generate API Key</h1>
-
-          {isConnected ? (
-            <div className="mb-6">
-              <p className="text-lg mb-2 text-gray-400">Connected Wallet Address:</p>
-              <p className="text-xl font-bold break-words bg-gray-900 p-3 rounded-lg">
-                {address}
-              </p>
-            </div>
-          ) : (
-            <p className="text-red-500">Please connect your wallet to proceed.</p>
-          )}
-
-          <div className="mt-6">
-            <button
-              onClick={handleGenerateApiKey}
-              className={`w-full px-6 py-3 ${loading ? 'bg-gray-500' : 'bg-green-500'} font-bold text-white rounded-lg hover:bg-green-600 transition`}
-              disabled={!isConnected || loading}
-            >
-              {loading ? 'Generating...' : 'Generate API Key'}
-            </button>
+      <main className="flex-grow flex justify-center items-center p-6 h-screen ">
+        <div className="flex w-full max-w-6xl p-8 bg-black border border-[#FF8B00] rounded-2xl border-opacity-60 relative ">
+          {/* Left Column: Lottie Animation */}
+          <div className="w-0.4 flex justify-center items-center">
+            <Lottie
+              loop
+              animationData={animationData}
+              play
+              speed={0.7}
+              style={{
+                width: 500,
+                height: 500,
+              }}
+            />
           </div>
 
-          {apiKey && (
-            <div className="mt-6">
-              <p className="text-lg mb-2 text-gray-400">Generated API Key:</p>
-              <div className="relative flex items-center bg-gray-900 p-3 rounded-lg">
-                <p className="text-xl font-bold break-all mr-8">{apiKey}</p>
-                <button
-                  onClick={handleCopy}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
-                >
-                  <FaCopy />
-                </button>
+          {/* Right Column: API Key Generation */}
+          <div className="w-0.6 flex flex-col justify-center pl-10">
+            <h1 className="text-3xl font-bold mb-6 text-center text-orange-500">
+              Generate API Key
+            </h1>
+
+            {isConnected ? (
+              <div className="mb-6">
+                <p className="text-lg mb-2 text-gray-400">
+                  Connected Wallet Address:
+                </p>
+                <p className="text-xl font-bold break-words bg-gray-900 p-3 rounded-lg">
+                  {address}
+                </p>
               </div>
-              {copied && (
-                <p className="text-green-500 text-sm mt-2">Copied to clipboard!</p>
-              )}
+            ) : (
+              <p className="text-white text-center">
+                Please connect your wallet to proceed.
+              </p>
+            )}
+
+            <div className="mt-6">
+              <button
+                onClick={handleGenerateApiKey}
+                className={`w-full px-6 py-3 ${
+                  loading ? "bg-gray-500" : "bg-orange-500"
+                } font-bold text-white rounded-lg hover:bg-orange-600 transition`}
+                disabled={!isConnected || loading}
+              >
+                {loading ? "Generating..." : "Generate API Key"}
+              </button>
             </div>
-          )}
+
+            {apiKey && (
+              <div className="mt-6">
+                <p className="text-lg mb-2 text-gray-400">
+                  Generated API Key:
+                </p>
+                <div className="relative flex items-center bg-gray-900 p-3 rounded-lg">
+                  <p className="text-xl font-bold break-all mr-8">{apiKey}</p>
+                  <button
+                    onClick={handleCopy}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                  >
+                    <FaCopy />
+                  </button>
+                </div>
+                {copied && (
+                  <p className="text-green-500 text-sm mt-2">
+                    Copied to clipboard!
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </main>
 
