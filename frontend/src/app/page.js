@@ -131,19 +131,19 @@ export default function HeroSection() {
         >
           <div className="flex flex-col md:flex-row justify-around items-center max-w-7xl mx-auto px-6 md:px-12">
             <div className="text-center mb-6 md:mb-0">
-              <h3 className="text-4xl font-bold">100+</h3>
+              <h3 className="text-4xl font-bold">5000+</h3>
               <p className="text-[#FEFFDB]">Data Queries Processed</p>
             </div>
             <div className="text-center mb-6 md:mb-0">
-              <h3 className="text-4xl font-bold">10+</h3>
+              <h3 className="text-4xl font-bold">50+</h3>
               <p className="text-[#FEFFDB]">Total Contracts Indexed</p>
             </div>
             <div className="text-center mb-6 md:mb-0">
-              <h3 className="text-4xl font-bold">10+</h3>
+              <h3 className="text-4xl font-bold">50+</h3>
               <p className="text-[#FEFFDB]">Blitz Created</p>
             </div>
             <div className="text-center">
-              <h3 className="text-4xl font-bold">30+</h3>
+              <h3 className="text-4xl font-bold">200+</h3>
               <p className="text-[#FEFFDB]">Blockchain Events Indexed</p>
             </div>
           </div>
