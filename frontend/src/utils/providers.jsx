@@ -35,7 +35,7 @@ const config = getDefaultConfig({
     projectId: "d9a0a754111f41404d4e99cb91f32b3d",
   chains: [OpenCampus],
   transports: {
-    [OpenCampus.id]: http('https://lb.drpc.org/ogrpc?network=open-campus-codex-sepolia&dkey=AnA59SV95kZ5lihvs8EOYhgim-29f7QR75SQhlDYfw4q')
+    [OpenCampus.id]: http('https://rpc.open-campus-codex.gelato.digital/')
   }
 });
 
