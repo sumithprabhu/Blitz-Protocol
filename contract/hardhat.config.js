@@ -1,5 +1,6 @@
 require("dotenv").config();
 require("@nomicfoundation/hardhat-toolbox");
+// require("@nomiclabs/hardhat-etherscan")
 
 
 module.exports = {
@@ -15,15 +16,15 @@ module.exports = {
   },
   etherscan: {
     apiKey: {
-      opencampus: "your-etherscan-api-key",
+      opencampus: "XXX",
     },
     customChains: [
       {
         network: "opencampus",
         chainId: 656476,
         urls: {
-          apiURL: "https://opencampus-codex.blockscout.com/api",
-          browserURL: "https://opencampus-codex.blockscout.com",
+          apiURL: "https://edu-chain-testnet.blockscout.com/api",
+          browserURL: "https://edu-chain-testnet.blockscout.com/",
         },
       },
     ],
