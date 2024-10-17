@@ -14,6 +14,13 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(cors({
+    origin: 'https://blitzprotocol.org/', // Replace with your frontend domain
+    credentials: true, // Enable credentials if you're using cookies or other credentials
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Add the allowed methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Specify the allowed headers
+}));
+
 
 app.use(cors({origin:true,credentials: true}));
 
