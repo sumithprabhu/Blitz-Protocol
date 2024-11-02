@@ -1,7 +1,0 @@
-{
-    "routes": [
-      { "src": "/api/(.*)", "dest": "https://blitz-protocol-backend-qpvv.vercel.app/api/" },
-      { "src": "/(.*)", "dest": "/" }
-    ]
-  }
-  
